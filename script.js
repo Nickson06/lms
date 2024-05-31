@@ -149,6 +149,39 @@ function fetchLeaderboardData() {
             console.error('Error fetching leaderboard data:', error);
         });
 }
+// Function to save selected courses to local storage
+function saveSelectedCourses(event) {
+    event.preventDefault();
+    const selectedCourses = [];
+    const checkboxes = document.querySelectorAll('input[name="course"]:checked');
+    checkboxes.forEach((checkbox) => {
+        selectedCourses.push(checkbox.value);
+    });
+    localStorage.setItem('selectedCourses', JSON.stringify(selectedCourses));
+    alert('Courses saved successfully!');
+}
+
+// Function to display selected courses from local storage
+function displaySelectedCourses() {
+    const selectedCourses = JSON.parse(localStorage.getItem('selectedCourses')) || [];
+    const selectedCoursesList = document.getElementById('selected-courses-list');
+    selectedCoursesList.innerHTML = '';
+    selectedCourses.forEach((course) => {
+        const li = document.createElement('li');
+        li.textContent = course;
+        selectedCoursesList.appendChild(li);
+    });
+}
+
+// Add event listener to the form on the course selection page
+if (document.getElementById('course-form')) {
+    document.getElementById('course-form').addEventListener('submit', saveSelectedCourses);
+}
+
+// Call display function if on the selected courses page
+if (document.getElementById('selected-courses-list')) {
+    document.addEventListener('DOMContentLoaded', displaySelectedCourses);
+}
 
 function displayLeaderboardData(leaderboardData) {
     // Get the leaderboard element
